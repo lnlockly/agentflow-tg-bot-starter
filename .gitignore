@@ -3,3 +3,8 @@ __pycache__/
 .env
 venv/
 .venv/
+bot.db
+bot.db-journal
+bot.db-wal
+bot.db-shm
+.pytest_cache/
