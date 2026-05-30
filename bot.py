@@ -86,6 +86,12 @@ async def cmd_book(msg: Message) -> None:
 async def main() -> None:
     db.init_db()
     logger.info("Starting bot @%s (owner=%s)", BOT_USERNAME or "<unknown>", OWNER_TG_ID or "<unset>")
+    # Clear any webhook before long-polling. A bot previously wired to a webhook
+    # (an earlier platform /connect-telegram integration, or a prior deploy) makes
+    # getUpdates fail with TelegramConflictError ("can't use getUpdates while
+    # webhook is active") and the bot never receives messages. delete_webhook
+    # makes the switch to polling deterministic for any token.
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 
